@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Pharmacy, Category, CompetitorProduct, ReportingManager, Doctor, SalesRepresentative, Store, Distributor, Product, Order, OrderItem, Inventory
+from api.models import Pharmacy, Category, CompetitorProduct, ReportingManager, Doctor, SalesRepresentative, Store, Distributor, Product, Order, OrderItem, Inventory,Working
 
 class DistributorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -118,3 +118,35 @@ class OrderSerializer(serializers.ModelSerializer):
     #     instance.order_date = validated_data.get('order_date',instance.order_date)
     #     instance.save()
     #     for item in order_items_data:
+
+class WorkingSerializer(serializers.ModelSerializer):
+    order_items = OrderItemSerializer(many=True)
+    pharmacy_id = serializers.PrimaryKeyRelatedField(
+                queryset=Pharmacy.objects.all(),
+                write_only=True,
+                required=False
+                )
+    
+    distributor_id = serializers.PrimaryKeyRelatedField(
+                queryset=Distributor.objects.all(),
+                write_only=True,
+                required=False
+                )
+    
+    class Meta:
+        model = Working
+        fields = ('pharmacy', 'product', 'is_new_marketing_material', 'marketing_material_image', 'got_orders','order_items','order_book_image', 'distributor' , 'pharmacy_image', 'distributor_id', 'pharmacy_id')
+        extra_kwargs = {
+                'order_book_image': {'write_only':True},
+                }
+        depth = 1
+   
+    def create(self, validated_data):
+        order_items_data = validated_data.pop('order_items')
+        validated_data['distributor_id'] = validated_data['distributor_id'].id
+        validated_data['pharmacy_id'] = validated_data['pharmacy_id'].id
+        working = Working.objects.create(**validated_data)
+        print(order_items_data)
+        for item in order_items_data:
+             OrderItem.objects.create(working=working, units=item.get('units'), pack_size=item.get('pack_size'), product=item.get('product'))
+        return working

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Pharmacy, ReportingManager, SalesRepresentative, Doctor, Store, Product, CompetitorProduct, Category, Distributor, Order, OrderItem
+from api.models import Pharmacy, ReportingManager, SalesRepresentative, Doctor, Store, Product, CompetitorProduct, Category, Distributor, Order, OrderItem, Working
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -41,3 +41,7 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'order', 'product', 'units', 'pack_size')
+
+@admin.register(Working)
+class WorkingAdmin(admin.ModelAdmin):
+    list_display = ('id',)

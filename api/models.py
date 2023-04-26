@@ -50,9 +50,9 @@ class Doctor(models.Model):
     registration_council = models.CharField(max_length=100)
     registration_no = models.CharField(max_length=100)
     yor = models.IntegerField()
-    photo_id_proof = models.FileField(upload_to="doctor/id_proof")  
-    registration_proof = models.FileField(upload_to="doctor/registration_proof")
-    clinic_registration_proof = models.FileField(upload_to="doctor/clinic_reg_proof")
+    photo_id_proof = models.URLField()  
+    registration_proof = models.URLField()
+    clinic_registration_proof = models.URLField()
 
 
 class Inventory(models.Model):
@@ -99,7 +99,7 @@ class Store(models.Model):
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20)
     email = models.EmailField()
-    logo = models.ImageField(upload_to='store_logos')
+    logo = models.URLField()
     sales_rep = models.ForeignKey(SalesRepresentative, on_delete=models.CASCADE, related_name='stores')
 
     def __str__(self):
@@ -153,8 +153,29 @@ class Order(models.Model):
         return f"Order for {self.pharmacy.name}"
 
 
+
+class Working(models.Model):
+    GOT_ORDERS = (
+        ('Yes','Yes'),
+        ('No','No'),
+    )
+    IS_NEW_MARKETING_MATERIAL = (
+        ('Yes','Yes'),
+        ('No','No'),
+    )
+    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)
+    is_new_marketing_material = models.CharField(max_length=5, choices=IS_NEW_MARKETING_MATERIAL)
+    marketing_material_image = models.URLField(null=True)
+    got_orders = models.CharField(max_length=5, choices=GOT_ORDERS)
+    order_book_image = models.URLField(null=True)
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    pharmacy_image = models.URLField(null=True)
+
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items', null=True)
+    working = models.ForeignKey(Working, on_delete=models.CASCADE, related_name='order_items', null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     units = models.IntegerField()
     pack_size = models.IntegerField()

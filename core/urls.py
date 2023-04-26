@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 from api.viewsets import (
     InventoryViewSet, PharmacyViewSet, ReportingManagerViewSet, SalesRepresentativeViewSet, DoctorViewSet,
-    StoreViewSet, ProductViewSet,CategoryViewSet, CompetitorProductViewSet, DistributorViewSet, OrderViewSet, OrderItemViewSet
+    StoreViewSet, ProductViewSet,CategoryViewSet, CompetitorProductViewSet, DistributorViewSet, OrderViewSet, OrderItemViewSet, WorkingViewSet
 )
 from django.conf import settings  
 from django.conf.urls.static import static  
@@ -21,6 +21,7 @@ router.register(r'pharmacies', PharmacyViewSet)
 router.register(r'distributors', DistributorViewSet)
 router.register(r'doctors', DoctorViewSet)
 router.register(r'inventories', InventoryViewSet)
+router.register(r'working', WorkingViewSet)
 
 def trigger_error(request):
     division_by_zero = 1 / 0

@@ -56,11 +56,12 @@ class Doctor(models.Model):
 
 
 class Inventory(models.Model):
-    name = models.CharField(max_length=100)
-    stock = models.IntegerField()
-
+    product = models.ForeignKey("Product", on_delete=models.CASCADE)
+    units = models.IntegerField()
+    pack_size = models.IntegerField()
+    
     def __str__(self):
-        return self.name
+        return self.product.name
 
 
 class Pharmacy(models.Model):
@@ -78,7 +79,7 @@ class Pharmacy(models.Model):
         ('No','No'),
     )
     name = models.CharField(max_length=100)
-    drug_license_number = models.CharField(max_length=100, null=True)
+    drug_license_number = models.CharField(max_length=100)
     p_type = models.CharField(max_length=10, choices=TYPES) 
     location = models.CharField(max_length=100)
     contact_person = models.CharField(max_length=100)
@@ -143,7 +144,7 @@ class Order(models.Model):
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
     sales_rep = models.ForeignKey(SalesRepresentative, on_delete=models.CASCADE, related_name='orders')
     order_book_image = models.URLField()
-    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE, null=True, blank=True)
     # payment_terms = models.CharField(max_length=255)
     shipping_address = models.CharField(max_length=255)
     # notes = models.TextField()
@@ -169,7 +170,7 @@ class Working(models.Model):
     marketing_material_image = models.URLField(null=True)
     got_orders = models.CharField(max_length=5, choices=GOT_ORDERS)
     order_book_image = models.URLField(null=True)
-    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE, null=True, blank=True)
     pharmacy_image = models.URLField(null=True)
 
 

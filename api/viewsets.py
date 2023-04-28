@@ -11,8 +11,8 @@ class InventoryViewSet(viewsets.ModelViewSet):
     queryset = Inventory.objects.all()
     serializer_class = InventorySerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['name']
-    filterset_fields = ['name']
+    #search_fields = ['product.name']
+    #filterset_fields = ['product.name']
 
 class PharmacyViewSet(viewsets.ModelViewSet):
     queryset = Pharmacy.objects.all()

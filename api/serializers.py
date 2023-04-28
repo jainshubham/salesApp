@@ -130,7 +130,8 @@ class WorkingSerializer(serializers.ModelSerializer):
     distributor_id = serializers.PrimaryKeyRelatedField(
                 queryset=Distributor.objects.all(),
                 write_only=True,
-                required=False
+                required=False,
+                allow_null=True
                 )
     
     class Meta:
@@ -143,10 +144,12 @@ class WorkingSerializer(serializers.ModelSerializer):
    
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_items')
-        validated_data['distributor_id'] = validated_data['distributor_id'].id
+
+        validated_data['distributor_id'] = validated_data['distributor_id'].id if validated_data['distributor_id'] is not None else None
+
         validated_data['pharmacy_id'] = validated_data['pharmacy_id'].id
         working = Working.objects.create(**validated_data)
-        print(order_items_data)
+        #print(order_items_data)
         for item in order_items_data:
              OrderItem.objects.create(working=working, units=item.get('units'), pack_size=item.get('pack_size'), product=item.get('product'))
         return working

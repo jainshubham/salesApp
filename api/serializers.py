@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Pharmacy, Category, CompetitorProduct, ReportingManager, Doctor, SalesRepresentative, Store, Distributor, Product, Order, OrderItem, Inventory,Working
+from api.models import Pharmacy, Category, CompetitorProduct, ReportingManager, Doctor, SalesRepresentative, Store, Distributor, Product, Order, OrderItem, Inventory,Working, GeoTag
 
 class DistributorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -119,8 +119,14 @@ class OrderSerializer(serializers.ModelSerializer):
     #     instance.save()
     #     for item in order_items_data:
 
+class GeoTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GeoTag
+        fields = ('working', 'latitude', 'longitude')
+
 class WorkingSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(many=True)
+    geotag = GeoTagSerializer(many=True)
     pharmacy_id = serializers.PrimaryKeyRelatedField(
                 queryset=Pharmacy.objects.all(),
                 write_only=True,
@@ -136,7 +142,7 @@ class WorkingSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Working
-        fields = ('pharmacy', 'product', 'is_new_marketing_material', 'marketing_material_image', 'got_orders','order_items','order_book_image', 'distributor' , 'pharmacy_image', 'distributor_id', 'pharmacy_id')
+        fields = ('pharmacy', 'product', 'is_new_marketing_material', 'marketing_material_image', 'got_orders','order_items','order_book_image', 'distributor' , 'pharmacy_image', 'distributor_id', 'pharmacy_id','geotag')
         extra_kwargs = {
                 'order_book_image': {'write_only':True},
                 }
@@ -149,7 +155,13 @@ class WorkingSerializer(serializers.ModelSerializer):
 
         validated_data['pharmacy_id'] = validated_data['pharmacy_id'].id
         working = Working.objects.create(**validated_data)
-        #print(order_items_data)
-        for item in order_items_data:
-             OrderItem.objects.create(working=working, units=item.get('units'), pack_size=item.get('pack_size'), product=item.get('product'))
+        
+        geotag_data = validated_data.pop('geotag')
+        if geotag_data:
+            for item in geotag_data:
+                GeoTag.objects.create(working=working, latitude=item.get('latitude'), longitude=item.get('longitude'))
+        if order_items_data:        
+            for item in order_items_data:
+                OrderItem.objects.create(working=working, units=item.get('units'), pack_size=item.get('pack_size'), product=item.get('product'))
         return working
+

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Pharmacy, ReportingManager, SalesRepresentative, Doctor, Store, Product, CompetitorProduct, Category, Distributor, Order, OrderItem, Working
+from api.models import Pharmacy, ReportingManager, SalesRepresentative, Doctor, Store, Product, CompetitorProduct, Category, Distributor, Order, OrderItem, Working, GeoTag
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -45,3 +45,7 @@ class OrderItemAdmin(admin.ModelAdmin):
 @admin.register(Working)
 class WorkingAdmin(admin.ModelAdmin):
     list_display = ('id',)
+
+@admin.register(GeoTag)
+class GeoTagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'latitude', 'longitude')    

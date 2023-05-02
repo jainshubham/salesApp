@@ -183,3 +183,12 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} ({self.quantity})"
+
+
+class GeoTag(models.Model):
+    working = models.ForeignKey(Working, on_delete=models.CASCADE, related_name='geotag', null=True)
+    latitude = models.CharField(max_length=20)
+    longitude = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"({self.latitude}, {self.longitude})"

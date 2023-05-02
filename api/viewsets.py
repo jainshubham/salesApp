@@ -1,10 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
-from .models import Inventory, Pharmacy, ReportingManager, SalesRepresentative, Doctor, Store, Category, Product, CompetitorProduct, Distributor,  Order, OrderItem, Working
+from .models import Inventory, Pharmacy, ReportingManager, SalesRepresentative, Doctor, Store, Category, Product, CompetitorProduct, Distributor,  Order, OrderItem, Working, GeoTag
 from .serializers import (
     InventorySerializer, PharmacySerializer, ReportingManagerSerializer,
     SalesRepresentativeSerializer, DoctorSerializer, StoreSerializer, ProductSerializer, DistributorSerializer,
-    OrderSerializer, OrderItemSerializer, CompetitorProductSerializer, CategorySerializer, WorkingSerializer
+    OrderSerializer, OrderItemSerializer, CompetitorProductSerializer, CategorySerializer, WorkingSerializer, GeoTagSerializer
 )
 
 class InventoryViewSet(viewsets.ModelViewSet):
@@ -89,3 +89,7 @@ class WorkingViewSet(viewsets.ModelViewSet):
     queryset = Working.objects.all()
     serializer_class = WorkingSerializer
     
+class GeoTagViewSet(viewsets.ModelViewSet):
+    queryset = GeoTag.objects.all()
+    serializer_class = GeoTagSerializer
+        

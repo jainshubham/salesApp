@@ -151,12 +151,12 @@ class WorkingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_items')
 
+        geotag_data = validated_data.pop('geotag')
         validated_data['distributor_id'] = validated_data['distributor_id'].id if validated_data['distributor_id'] is not None else None
 
         validated_data['pharmacy_id'] = validated_data['pharmacy_id'].id
         working = Working.objects.create(**validated_data)
         
-        geotag_data = validated_data.pop('geotag')
         if geotag_data:
             for item in geotag_data:
                 GeoTag.objects.create(working=working, latitude=item.get('latitude'), longitude=item.get('longitude'))

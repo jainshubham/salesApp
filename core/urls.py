@@ -27,7 +27,7 @@ router.register(r'geotags', GeoTagViewSet)
 def trigger_error(request):
     division_by_zero = 1 / 0
 
-urlpatterns = [
+urlpatterns = [ 
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('', include(router.urls)),

@@ -20,7 +20,9 @@ class ReportingManagerAdmin(admin.ModelAdmin):
 
 @admin.register(SalesRepresentative)
 class SalesRepresentativeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('name', 'email', 'phone_number', 'designation', 'joining_data')
+    list_filter = ('designation', 'joining_data')
+    search_fields = ('name', 'email', 'phone_number')
 
 @admin.register(Store)
 class StoreAdmin(admin.ModelAdmin):
@@ -32,7 +34,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Distributor)
 class DistributorAdmin(admin.ModelAdmin):
-    list_display = ('name','location','master_d', 'category')
+    list_display = ('name', 'state', 'head_quarter', 'appointed_by', 'super_distributor', 'category', 'sales_rep')
+    list_filter = ('state', 'super_distributor', 'category', 'sales_rep')
+    search_fields = ('name', 'state', 'appointed_by')
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

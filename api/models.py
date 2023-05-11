@@ -23,21 +23,27 @@ class SalesRepresentative(models.Model):
         ('South','South'),
         ('North','North'),
     )
-   # email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True)
     mylab_id = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)
     # password = models.CharField(max_length=255)
-    gender = models.CharField(max_length=100,choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=100,choices=GENDER_CHOICES,null=True,blank=True)
     phone_number = models.CharField(max_length=20)
-    whatsapp_number = models.CharField(max_length=20)
-    age = models.CharField(max_length=3)
-    address = models.CharField(max_length=100)
-    reporting_manager = models.ForeignKey(ReportingManager, on_delete=models.CASCADE)
-    reporting_business_unit = models.CharField(max_length=10,choices=REPORTING_BIZ_UNIT)
-    zone = models.CharField(max_length=6, choices= ZONES, null=True)
+    whatsapp_number = models.CharField(max_length=20, null=True,blank=True)
+    age = models.CharField(max_length=3, null=True,blank=True)
+    address = models.CharField(max_length=200, null=True,blank=True)
+    reporting_manager = models.ForeignKey(ReportingManager, on_delete=models.SET_NULL,null=True,blank=True)
+    reporting_business_unit = models.CharField(max_length=10,choices=REPORTING_BIZ_UNIT,null=True,blank=True)
+    zone = models.CharField(max_length=6, choices= ZONES, null=True,blank=True)
+    location_coverage = models.CharField(max_length=255)
+    designation = models.CharField(max_length=20)
+    joining_data = models.DateField()
 
     def __str__(self):
         return self.name
+
+
+
     
     
 class Doctor(models.Model):
@@ -131,9 +137,12 @@ class CompetitorProduct(models.Model):
 
 class Distributor(models.Model):
     name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
-    master_d = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    head_quarter = models.CharField(max_length=10)
+    appointed_by = models.CharField(max_length=100) 
+    super_distributor = models.BooleanField(default=False)
     category = models.CharField(max_length=255)
+    sales_rep = models.ForeignKey(SalesRepresentative, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name

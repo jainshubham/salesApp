@@ -32,8 +32,9 @@ class SalesRepresentativeViewSet(viewsets.ModelViewSet):
     queryset = SalesRepresentative.objects.all()
     serializer_class = SalesRepresentativeSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['name']
-    filterset_fields = ['name']
+    search_fields = ['name','phone_number']
+    filterset_fields = ['name','phone_number']
+    lookup_field = 'phone_number'
 
 class DoctorViewSet(viewsets.ModelViewSet):
     queryset = Doctor.objects.all()

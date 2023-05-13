@@ -137,12 +137,12 @@ class CompetitorProduct(models.Model):
 
 class Distributor(models.Model):
     name = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    head_quarter = models.CharField(max_length=10)
-    appointed_by = models.CharField(max_length=100) 
+    state = models.CharField(max_length=255,null=True,blank=True)
+    head_quarter = models.CharField(max_length=10,null=True,blank=True)
+    appointed_by = models.CharField(max_length=100,null=True,blank=True) 
     super_distributor = models.BooleanField(default=False)
-    category = models.CharField(max_length=255)
-    sales_rep = models.ForeignKey(SalesRepresentative, on_delete=models.SET_NULL, null=True)
+    category = models.CharField(max_length=255,null=True,blank=True)
+    sales_rep = models.ForeignKey(SalesRepresentative, on_delete=models.SET_NULL, null=True,blank=True)
 
     def __str__(self):
         return self.name

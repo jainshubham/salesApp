@@ -23,7 +23,6 @@ class SalesRepresentative(models.Model):
         ('South','South'),
         ('North','North'),
     )
-    email = models.EmailField(unique=True)
     mylab_id = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)
     # password = models.CharField(max_length=255)
@@ -35,9 +34,9 @@ class SalesRepresentative(models.Model):
     reporting_manager = models.ForeignKey(ReportingManager, on_delete=models.SET_NULL,null=True,blank=True)
     reporting_business_unit = models.CharField(max_length=10,choices=REPORTING_BIZ_UNIT,null=True,blank=True)
     zone = models.CharField(max_length=6, choices= ZONES, null=True,blank=True)
-    location_coverage = models.CharField(max_length=255)
-    designation = models.CharField(max_length=20)
-    joining_data = models.DateField()
+    location_coverage = models.CharField(max_length=255,null=True,blank=True)
+    designation = models.CharField(max_length=20,null=True,blank=True)
+    joining_data = models.DateField(null=True,blank=True)
 
     def __str__(self):
         return self.name

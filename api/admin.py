@@ -20,7 +20,7 @@ class ReportingManagerAdmin(admin.ModelAdmin):
 
 @admin.register(SalesRepresentative)
 class SalesRepresentativeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone_number', 'designation', 'joining_data')
+    list_display = ('name',  'phone_number', 'designation', 'joining_data')
     list_filter = ('designation', 'joining_data')
     search_fields = ('name', 'email', 'phone_number')
 
